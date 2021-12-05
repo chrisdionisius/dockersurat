@@ -9,6 +9,7 @@ services:
       - db
     volumes:
       - ./php/src:/var/www/html/
+      - ./php/lsp_surat.sql:/docker-entrypoint-initdb.d/lsp_surat.sql
     ports:
       - 8000:80
   db:
