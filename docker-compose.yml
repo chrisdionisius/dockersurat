@@ -1,25 +1,37 @@
 version: "3.8"
 services:
   php-apache-environment:
+    image: chrisdionisius/dockersurat
     container_name: php-apache
-    build:
-      context: ./php
-      dockerfile: Dockerfile
     depends_on:
       - db
     volumes:
       - ./php/src:/var/www/html/
-      - ./php/lsp_surat.sql:/docker-entrypoint-initdb.d/lsp_surat.sql
     ports:
       - 8000:80
+    networks:
+      - backend
   db:
-    container_name: db
+    container_name: db2
     image: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: lsp_surat
-      MYSQL_USER: sigma
-      MYSQL_PASSWORD: root
     ports:
-      - "9906:3306"
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+      - ./php/lsp_surat.sql:/docker-entrypoint-initdb.d/lsp_surat.sql
+    networks:
+      - backend
+volumes:
+  db:
+
+networks:
+  backend:
+    name: backend-network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.15.0.0/24

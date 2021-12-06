@@ -1,5 +1,5 @@
 <?php
-	$host='db';
+	$host='172.16.0.2';
 	$user='sigma';
 	$pass='root';
 	$db='lsp_surat';
